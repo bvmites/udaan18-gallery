@@ -7,6 +7,8 @@
 
   window.addEventListener('hashchange', hashChangeEvent);
 
+  var hasAlbumViewerBooted = false;
+
   var albums = document.querySelector('.albums');
   var albumViewer = document.querySelector('.album-viewer');
   var albumTitle = document.querySelector('.album-title');
@@ -16,15 +18,18 @@
   function hashChangeEvent() {
     var hash = location.hash.slice(1);
     if(isValidPhotosetId(hash)) {
+
       albums.style.display = 'none';
       albumViewer.style.display = 'block';
       setupPhotoset();
-      window.albumViewer.init();
-      window.setTimeout(function () {
-        if(document.querySelector('.thumbnail')) {
-          document.querySelector('.thumbnail').click();
-        }
-      }, 100);
+      if(!hasAlbumViewerBooted) {
+        window.albumViewer.init();
+      } else {
+        window.albumViewer.initViewer();
+        window.setTimeout(function () {
+          window.albumViewer.switchTo(0, true);
+        }, 0);
+      }
     } else {
       albums.style.display = 'block';
       albumViewer.style.display = 'none';
@@ -93,6 +98,9 @@
     var anchor = document.createElement('a');
     anchor.classList.add('grid__item');
     anchor.href = href || '#';
+    anchor.addEventListener('click', function () {
+      location.reload();
+    });
 
     var stack = document.createElement('div');
     stack.classList.add('stack');
@@ -104,7 +112,6 @@
       stackDeco.appendChild(stackDecoImg);
       stack.appendChild(stackDeco);
     }
-
 
     var stackFigure = document.createElement('div');
     stackFigure.classList.add('stack__figure');

@@ -168,10 +168,9 @@ window.albumViewer = (function($) { var _ = {
 			_.$main = $('#main');
 
 		// Toggle.
-			$('<div class="toggle"></div>')
-				.appendTo(_.$main);
 
-			_.$toggle = $('.toggle');
+			_.$toggle = $('.toggle').length ? $('.toggle') : ($('<div class="toggle"></div>')
+        .appendTo(_.$main));
 
 		// IE<9: Fix viewer width (no calc support).
 			if (skel.vars.IEVersion < 9)
@@ -393,6 +392,7 @@ window.albumViewer = (function($) { var _ = {
 	 */
 	initViewer: function() {
 		// Bind thumbnail click event.
+      _.$thumbnails.off('click');
 			_.$thumbnails
 				.on('click', '.thumbnail', function(event) {
 					var $this = $(this);
@@ -406,10 +406,10 @@ window.albumViewer = (function($) { var _ = {
 							$this.blur();
 
 					// Switch to this thumbnail's slide.
-						_.switchTo($this.data('index') || 0);
-
+						_.switchTo($this.data('index'));
 				});
 
+      _.slides = [];
 		// Create slides from thumbnails.
 			_.$thumbnails.children()
 				.each(function() {
@@ -474,7 +474,8 @@ window.albumViewer = (function($) { var _ = {
 						$thumbnail.data('index', _.slides.length - 1);
 
 				});
-
+      _.current = -1;
+      _.switchTo(0, true);
 	},
 
 	/**
@@ -567,7 +568,6 @@ window.albumViewer = (function($) { var _ = {
 				newSlide.$parent
 					.addClass('active')
 					.focus();
-
 			// Slide.
 				var f = function() {
 
@@ -728,8 +728,10 @@ window.albumViewer = (function($) { var _ = {
 	show: function() {
 
 		// Already visible? Bail.
-			if (!_.$body.hasClass('fullscreen'))
-				return;
+			if (!_.$body.hasClass('fullscreen')) {
+        return;
+      }
+
 
 		// Show main wrapper.
 			_.$body.removeClass('fullscreen');
@@ -745,8 +747,10 @@ window.albumViewer = (function($) { var _ = {
 	hide: function() {
 
 		// Already hidden? Bail.
-			if (_.$body.hasClass('fullscreen'))
-				return;
+			if (_.$body.hasClass('fullscreen')) {
+        return;
+      }
+
 
 		// Hide main wrapper.
 			_.$body.addClass('fullscreen');
@@ -760,7 +764,6 @@ window.albumViewer = (function($) { var _ = {
 	 * Toggles main wrapper.
 	 */
 	toggle: function() {
-
 		if (_.$body.hasClass('fullscreen'))
 			_.show();
 		else

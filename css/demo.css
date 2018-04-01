@@ -75,6 +75,15 @@ a:focus {
 	color: #b0adad;
 }
 
+@media (max-width: 42em) {
+  .gallery-header__title {
+    font-size: 1.65em;
+  }
+  .gallery-header__tagline {
+    font-size: 1.35em;
+  }
+}
+
 .gallery-header__tagline::before {
 	content: '> ';
 }
@@ -465,6 +474,7 @@ a:focus {
 	.gallery-header {
 		display: block;
 		text-align: center;
+    padding: 1.5em 1.5em 1.5em;
 	}
 	.github {
 		width: 100%;
