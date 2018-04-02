@@ -1,7 +1,7 @@
 (function () {
   // Initialize static flickr
   var staticFlickrApi = new StaticFlickrApi({
-    host: '',
+    host: 'https://udaan18-gallery-api.herokuapp.com/',
     onPhotosetLoad: setupView
   });
 
