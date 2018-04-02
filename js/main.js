@@ -98,8 +98,9 @@
     var anchor = document.createElement('a');
     anchor.classList.add('grid__item');
     anchor.href = href || '#';
-    anchor.addEventListener('click', function () {
-      location.hash = location.hash[0] === '#' ? location.hash.slice(1): location.hash;
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      location.href = anchor.href;
       location.reload();
     });
 
