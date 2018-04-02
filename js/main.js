@@ -99,6 +99,7 @@
     anchor.classList.add('grid__item');
     anchor.href = href || '#';
     anchor.addEventListener('click', function () {
+      location.hash = location.hash[0] === '#' ? location.hash.slice(1): location.hash;
       location.reload();
     });
 
